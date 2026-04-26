@@ -28,7 +28,19 @@ export async function POST(
     return Response.json({ error: "Invalid API key" }, { status: 401 });
   }
 
-  // 2. Find tool
+  // 2. Check category permission
+  const allowedCategories = keyRecord.permissions.map((p) => p.category);
+  if (!allowedCategories.includes(category)) {
+    return Response.json(
+      {
+        error: `This API key does not have permission to access the '${category}' category.`,
+        allowedCategories,
+      },
+      { status: 403 }
+    );
+  }
+
+  // 3. Find tool
   const toolDef = getToolBySlug(category, toolSlug);
   if (!toolDef) {
     return Response.json(
@@ -37,7 +49,7 @@ export async function POST(
     );
   }
 
-  // 3. Check rate limit
+  // 4. Check rate limit
   const allowed = await checkRateLimit(keyRecord.id, toolDef.id);
   if (!allowed) {
     return Response.json(
@@ -46,7 +58,7 @@ export async function POST(
     );
   }
 
-  // 4. Parse body
+  // 5. Parse body
   let body: unknown;
   try {
     body = await req.json();
@@ -54,7 +66,7 @@ export async function POST(
     return Response.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  // 5. Call the process function registered on the tool definition
+  // 6. Call the process function registered on the tool definition
   try {
     const result = await Promise.resolve(toolDef.process(body));
     return Response.json({ success: true, tool: toolDef.id, result });

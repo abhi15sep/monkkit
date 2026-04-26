@@ -14,19 +14,32 @@ model User {
   emailVerified DateTime?
   image         String?
   createdAt     DateTime  @default(now())
-  apiKey        ApiKey?
+  apiKeys       ApiKey[]
   accounts      Account[]
   sessions      Session[]
 }
 
 model ApiKey {
-  id        String     @id @default(cuid())
-  key       String     @unique
-  userId    String     @unique
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime   @default(now())
-  lastUsed  DateTime?
-  usage     ApiUsage[]
+  id          String             @id @default(cuid())
+  key         String             @unique
+  name        String             @default("Default Key")
+  userId      String
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime           @default(now())
+  lastUsed    DateTime?
+  usage       ApiUsage[]
+  permissions ApiKeyPermission[]
+
+  @@index([userId])
+}
+
+model ApiKeyPermission {
+  id       String @id @default(cuid())
+  apiKeyId String
+  apiKey   ApiKey @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+  category String // "json" | "generators" | "encoding"
+
+  @@unique([apiKeyId, category])
 }
 
 model ApiUsage {

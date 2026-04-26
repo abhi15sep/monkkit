@@ -2,25 +2,48 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Braces, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { Braces, QrCode, Lock, ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
 import { registry } from "@/registry";
 import { cn } from "@/lib/utils";
 
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   Braces,
+  QrCode,
+  Lock,
 };
+
+function activeCategoryFromPath(pathname: string): string | null {
+  // /tools/json/validator → "json"
+  const match = pathname.match(/^\/tools\/([^/]+)/);
+  return match ? match[1] : null;
+}
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const [openCategories, setOpenCategories] = useState<string[]>(
-    registry.categories.map((c) => c.id)
+  const activeCategory = activeCategoryFromPath(pathname);
+
+  // Start with only the active category open; others collapsed
+  const [openCategories, setOpenCategories] = useState<Set<string>>(
+    () => new Set(activeCategory ? [activeCategory] : [])
   );
 
+  // When navigating to a different category, auto-open it
+  useEffect(() => {
+    if (activeCategory) {
+      setOpenCategories((prev) => {
+        if (prev.has(activeCategory)) return prev;
+        return new Set([...prev, activeCategory]);
+      });
+    }
+  }, [activeCategory]);
+
   const toggle = (id: string) =>
-    setOpenCategories((prev) =>
-      prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
-    );
+    setOpenCategories((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
 
   return (
     <aside className="w-56 shrink-0 hidden md:flex flex-col border-r border-border/50 h-[calc(100vh-3.5rem)] sticky top-14 overflow-y-auto">
@@ -28,14 +51,19 @@ export function AppSidebar() {
         {registry.categories.map((category) => {
           const Icon = ICONS[category.icon] ?? Braces;
           const tools = registry.tools.filter((t) => t.category === category.id);
-          const isOpen = openCategories.includes(category.id);
+          const isOpen = openCategories.has(category.id);
+          const isCategoryActive = activeCategory === category.id;
 
           return (
             <div key={category.id}>
               <button
                 onClick={() => toggle(category.id)}
-                className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium
-                           text-muted-foreground hover:text-foreground hover:bg-accent/10 transition-colors"
+                className={cn(
+                  "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium transition-colors",
+                  isCategoryActive
+                    ? "text-foreground bg-accent/10"
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent/10"
+                )}
               >
                 <Icon className="h-4 w-4 shrink-0" />
                 <span className="flex-1 text-left">{category.name}</span>
