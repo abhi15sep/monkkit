@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { ExternalLink, Coffee, Heart, GitBranch } from "lucide-react";
+import { ExternalLink, Coffee, GitBranch } from "lucide-react";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { AppFooter } from "@/components/layout/AppFooter";
 
 export const metadata = { title: "About | MonkKit" };
 
-const DONATE_URL = process.env.NEXT_PUBLIC_DONATE_URL ?? "https://buymeacoffee.com/abhi15sep";
 const BUY_COFFEE_URL = "https://buymeacoffee.com/abhi15sep";
 
 export default function AboutPage() {
@@ -53,22 +52,6 @@ export default function AboutPage() {
               </div>
             </div>
             <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-yellow-400 transition-colors" />
-          </a>
-
-          <a
-            href={DONATE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between rounded-xl border border-primary/20 bg-primary/5 px-5 py-4 hover:bg-primary/10 transition-colors group"
-          >
-            <div className="flex items-center gap-3">
-              <Heart className="h-5 w-5 text-primary" />
-              <div>
-                <p className="font-medium text-sm">Donate</p>
-                <p className="text-xs text-muted-foreground">Help keep MonkKit free for everyone</p>
-              </div>
-            </div>
-            <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
           </a>
 
           <a
