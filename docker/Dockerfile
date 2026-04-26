@@ -21,18 +21,5 @@ COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 
-# Prisma CLI (needed for db push in entrypoint)
-COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-
-# Schema (needed by prisma db push) + seed script
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/docker/migrate-seed.mjs ./docker/migrate-seed.mjs
-
-# Entrypoint: db push → seed → start
-COPY docker/entrypoint.sh ./entrypoint.sh
-RUN chmod +x entrypoint.sh
-
 EXPOSE 3000
-ENTRYPOINT ["./entrypoint.sh"]
+CMD ["node", "server.js"]

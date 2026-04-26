@@ -32,10 +32,19 @@ jobs:
               git clone git@github.com:abhi15sep/monkkit.git "$REPO_DIR"
             fi
 
-            # Build new image
+            # Install deps (needed for prisma CLI + migrate-seed)
+            cd "$REPO_DIR"
+            npm ci --omit=dev --ignore-scripts 2>/dev/null || npm install --omit=dev --ignore-scripts
+
+            # Run DB migration + seed using project-local Prisma (avoids global version mismatch)
+            export $(grep -v '^#' "$APP_DIR/.env" | xargs)
+            node_modules/.bin/prisma db push --schema prisma/schema.prisma
+            node docker/migrate-seed.mjs
+
+            # Build new Docker image
             docker build -t monkkit:new "$REPO_DIR" -f "$REPO_DIR/docker/Dockerfile"
 
-            # Swap containers (zero-ish downtime)
+            # Swap containers
             docker stop monkkit 2>/dev/null || true
             docker rm monkkit 2>/dev/null || true
             docker run -d \
@@ -46,18 +55,8 @@ jobs:
               --restart unless-stopped \
               monkkit:new
 
-            # Wait for the container to pass its startup (db push + seed + server boot)
-            echo "Waiting for server to come up..."
-            for i in $(seq 1 30); do
-              if docker exec monkkit wget -qO- http://localhost:3000/api/health 2>/dev/null | grep -q ok; then
-                echo "Server is up."
-                break
-              fi
-              sleep 2
-            done
-
             # Clean up old images (keep last 2)
             docker images monkkit --format '{{.ID}}' | tail -n +3 | xargs -r docker rmi || true
 
-            echo "Deploy complete. Container status:"
+            echo "Deploy complete."
             docker ps --filter name=monkkit --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
