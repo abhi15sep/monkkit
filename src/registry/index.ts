@@ -1,10 +1,11 @@
 import { CATEGORIES } from "./categories";
 import { jsonTools } from "./tools/json";
+import { generatorTools } from "./tools/generators";
 import type { ToolRegistry, ToolDefinition, CategoryId } from "@/types/registry";
 
 export const registry: ToolRegistry = {
   categories: CATEGORIES,
-  tools: [...jsonTools],
+  tools: [...jsonTools, ...generatorTools],
 };
 
 export function getAllTools(): ToolDefinition[] {

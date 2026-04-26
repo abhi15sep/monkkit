@@ -528,6 +528,9 @@ docker run -d --name monkkit -p 3001:3000 \
 | `react-resizable-panels` | SplitPane resizer |
 | `lucide-react` | Icons |
 | `next-themes` | Dark/light mode |
+| `qrcode` | QR Code Generator |
+| `jsbarcode` | Barcode Generator (Code128, EAN, UPC, Code39, etc.) |
+| `xmldom` | Server-side DOM for jsbarcode SVG generation |
 
 ---
 
@@ -618,6 +621,45 @@ Each tool = `logic.ts` (pure) + `index.tsx` (UI) + registry entry.
 | 28 | `schema-generate` | JSON Schema Generator | Generate a JSON Schema from example JSON | `json-schema-generator` |
 | 29 | `jwt-decode` | JWT Decoder | Decode and inspect JWT header + payload | `jose` |
 | 30 | `token-count` | JSON Token Counter | Count tokens in JSON (for LLM context planning) | `js-tiktoken` |
+
+---
+
+### Phase 8 — QR Code & Barcode Generators (NEW CATEGORY: `generators`)
+
+**Research-backed features** (from qr.io, qrcode-monkey.com, orcascan.com):
+
+| # | Slug | Name | Description | Library |
+|---|------|------|-------------|---------|
+| 1 | `qr-code` | QR Code Generator | Generate QR codes for URL, Text, Email, Phone, SMS, WiFi, vCard. Customize colors, size, error correction. Download PNG/SVG | `qrcode` |
+| 2 | `barcode` | Barcode Generator | Generate barcodes in Code128, EAN-13, EAN-8, UPC-A, Code39, ITF, Codabar formats. Download PNG/SVG | `jsbarcode` |
+
+**QR Code types supported:**
+- URL / Link
+- Plain Text
+- Email (mailto:)
+- Phone number (tel:)
+- SMS message
+- WiFi credentials (WIFI:S:...;T:WPA;P:...;;)
+- vCard contact
+
+**Barcode formats supported:**
+- CODE128 (auto) — most versatile
+- EAN-13 — retail products
+- EAN-8 — small retail items
+- UPC-A — North American retail
+- CODE39 — alphanumeric, widely used
+- ITF-14 — packaging/shipping
+- Codabar — libraries, blood banks
+
+**UX pattern (different from JSON tools — visual output):**
+```
+┌─ Input/Options (left 40%) ────┬─ Preview (right 60%) ──────────┐
+│  [Type selector tabs]         │  Generated QR/Barcode image     │
+│  [Input fields per type]      │  [Download PNG] [Download SVG]  │
+│  [Size, colors, error level]  │  [Copy as Data URL]             │
+│  [Generate button]            │                                 │
+└───────────────────────────────┴─────────────────────────────────┘
+```
 
 ---
 

@@ -10,7 +10,13 @@ export const CATEGORIES: ToolCategory[] = [
     slug: "json",
     order: 1,
   },
-  // Future categories — add here as you build them
-  // { id: "encoding", name: "Encoding", description: "...", icon: "Lock", color: "blue", slug: "encoding", order: 2 },
-  // { id: "certificates", name: "Certificates", description: "...", icon: "ShieldCheck", color: "green", slug: "certificates", order: 3 },
+  {
+    id: "generators",
+    name: "Generators",
+    description: "Generate QR codes, barcodes, and other visual assets",
+    icon: "QrCode",
+    color: "violet",
+    slug: "generators",
+    order: 2,
+  },
 ];
