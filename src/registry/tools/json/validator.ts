@@ -1,17 +1,17 @@
 import type { ToolDefinition } from "@/types/registry";
 import { process } from "@/tools/json/validator/logic";
 
-export const jsonValidatorTool: ToolDefinition = {
+export const jsonToolsTool: ToolDefinition = {
   id: "json-validator",
   slug: "validator",
-  name: "JSON Validator",
-  shortDescription: "Validate JSON and highlight syntax errors with line numbers.",
+  name: "JSON Tools",
+  shortDescription: "Format, minify, and validate JSON in one place.",
   description:
-    "Paste any JSON string to instantly validate it. Get clear error messages with line and column numbers. Optionally pretty-print the output with configurable indentation.",
+    "All-in-one JSON tool: pretty-print with configurable indentation, minify to the smallest payload, or validate and get clear error messages with line and column numbers.",
   category: "json",
-  tags: ["validate", "lint", "check", "format"],
-  keywords: ["json validator online", "json lint", "check json syntax", "json checker"],
-  icon: "ShieldCheck",
+  tags: ["validate", "format", "minify", "lint", "pretty-print"],
+  keywords: ["json formatter online", "json validator", "json minify", "json pretty print", "json lint"],
+  icon: "Braces",
   status: "stable",
   component: () => import("@/tools/json/validator"),
   process,
