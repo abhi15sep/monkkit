@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff, RefreshCw } from "lucide-react";
+import { Eye, EyeOff, BookOpen, ExternalLink } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { AppFooter } from "@/components/layout/AppFooter";
@@ -17,6 +18,7 @@ interface Props {
 export function DashboardClient({ apiKey, usageToday, usageLimit, userName }: Props) {
   const [visible, setVisible] = useState(false);
   const donateUrl = process.env.NEXT_PUBLIC_DONATE_URL ?? "https://buymeacoffee.com";
+  const displayKey = visible ? apiKey : "mk_live_" + "•".repeat(32);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -27,29 +29,24 @@ export function DashboardClient({ apiKey, usageToday, usageLimit, userName }: Pr
           Welcome{userName ? `, ${userName.split(" ")[0]}` : ""}!
         </h1>
         <p className="text-muted-foreground text-sm mb-8">
-          Your API key lets you call any MonkKit tool programmatically.
+          Your API key gives programmatic access to all 31 tools.{" "}
+          <span className="text-foreground">Browser tools are always free — no login required.</span>
         </p>
 
-        {/* API Key card */}
+        {/* API Key */}
         <section className="rounded-xl border border-border/50 bg-card p-5 mb-4">
           <h2 className="font-semibold mb-3">Your API Key</h2>
           <div className="flex items-center gap-2">
             <code className="flex-1 rounded-md bg-muted px-3 py-2 text-sm font-mono break-all">
-              {visible ? apiKey : "mk_live_" + "•".repeat(32)}
+              {displayKey}
             </code>
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() => setVisible((v) => !v)}
-              title={visible ? "Hide" : "Show"}
-            >
+            <Button size="icon" variant="ghost" onClick={() => setVisible((v) => !v)} title={visible ? "Hide" : "Show"}>
               {visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </Button>
             <CopyButton value={apiKey} label="" />
           </div>
           <p className="text-xs text-muted-foreground mt-2">
-            Keep this key secret. Use it as{" "}
-            <code className="bg-muted px-1 rounded">Authorization: Bearer &lt;key&gt;</code>
+            Use as <code className="bg-muted px-1 rounded">Authorization: Bearer &lt;key&gt;</code> on every request.
           </p>
         </section>
 
@@ -69,27 +66,37 @@ export function DashboardClient({ apiKey, usageToday, usageLimit, userName }: Pr
           <p className="text-xs text-muted-foreground mt-2">Resets daily at midnight UTC.</p>
         </section>
 
-        {/* Example */}
+        {/* Quick start */}
         <section className="rounded-xl border border-border/50 bg-card p-5 mb-4">
-          <h2 className="font-semibold mb-3">Quick Start</h2>
-          <pre className="bg-muted rounded-lg p-3 text-xs overflow-x-auto">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-semibold">Quick Start</h2>
+            <Link
+              href="/docs/api"
+              className="flex items-center gap-1 text-xs text-primary hover:underline"
+            >
+              <BookOpen className="h-3.5 w-3.5" />
+              Full API reference
+              <ExternalLink className="h-3 w-3" />
+            </Link>
+          </div>
+          <pre className="bg-muted rounded-lg p-3 text-xs overflow-x-auto leading-relaxed">
 {`curl -X POST https://tools.devops-monk.com/api/v1/json/validator \\
   -H "Authorization: Bearer ${visible ? apiKey : "<your-api-key>"}" \\
   -H "Content-Type: application/json" \\
-  -d '{"input": "{\\"name\\": \\"John\\"}"}'`}
+  -d '{"input": "{\\"name\\": \\"Alice\\"}"}'`}
           </pre>
+          <p className="text-xs text-muted-foreground mt-2">
+            Pattern:{" "}
+            <code className="bg-muted px-1 rounded font-mono">POST /api/v1/&#123;category&#125;/&#123;tool&#125;</code>
+            {" "}— works for all 31 tools.
+          </p>
         </section>
 
         {/* Donate */}
         <section className="rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-5">
           <p className="text-sm">
             ☕ Enjoying MonkKit? It&apos;s free and always will be.{" "}
-            <a
-              href={donateUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-yellow-400 hover:underline font-medium"
-            >
+            <a href={donateUrl} target="_blank" rel="noopener noreferrer" className="text-yellow-400 hover:underline font-medium">
               Buy me a coffee
             </a>{" "}
             to support development!

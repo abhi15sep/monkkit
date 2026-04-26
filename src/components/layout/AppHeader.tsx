@@ -33,6 +33,9 @@ export function AppHeader() {
           <Link href="/tools" className="hover:text-foreground transition-colors">
             Tools
           </Link>
+          <Link href="/docs/api" className="hover:text-foreground transition-colors">
+            API Docs
+          </Link>
         </nav>
 
         <div className="flex-1" />
