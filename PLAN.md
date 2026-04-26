@@ -543,22 +543,110 @@ docker run -d --name monkkit -p 3001:3000 \
 7. Build homepage and `/dashboard` (API key + usage + donate card)
 8. Build universal API route handler
 
-### Phase 2 — First 3 JSON Tools (prove full stack end-to-end)
-9. JSON Validator — web UI + API
-10. JSON Formatter / Pretty Print
-11. JSON Minify
+### Phase 2 — Core JSON Tools ✅ DONE
+All three share a single unified UI component (validate + format + minify in one window).
+- `json/validator` — Unified JSON tool: Format, Minify, Validate actions in one split-pane UI
 
-### Phase 3+ — Expand one tool at a time
-12. Remaining Validate & Format tools (Sort Keys, Escape, Unescape, Stringify, Error Analyzer, Repair)
-13. View & Query tools (Tree Viewer, Table Viewer, Diff, JSONPath, Search, Size Analyzer, Flatten)
-14. Data Converters (CSV, YAML, XML, Excel, SQL, Markdown)
-15. Code Generators via `quicktype-core`
-16. Schema + Encoding tools (AJV, JWT, Base64, JSONC, Token Counter)
+Separate API-only entries (same logic, clean endpoints):
+- `json/formatter` — Format + sort keys (API)
+- `json/minify` — Minify + size stats (API)
 
-### Phase N — Deploy
-17. Dockerfile + docker/Dockerfile
-18. Add Nginx server block on VPS + SSL via certbot
-19. GitHub Actions CI/CD (SSH deploy on push to `main`)
+**UX pattern (research-backed):** Split pane, manual trigger buttons, `key` prop to reset output scroll, live status badge with line/col errors.
+
+---
+
+### Phase 3 — JSON Fix & Enhance Tools
+Each tool = `logic.ts` (pure) + `index.tsx` (UI) + registry entry.
+
+| # | Slug | Name | Description | Library |
+|---|------|------|-------------|---------|
+| 1 | `repair` | JSON Repair | Fix common JSON errors: trailing commas, single quotes, missing brackets, unquoted keys | `jsonrepair` |
+| 2 | `escape` | JSON Escape | Escape a JSON string for embedding inside another string | native |
+| 3 | `unescape` | JSON Unescape | Unescape a JSON-encoded string back to readable text | native |
+| 4 | `stringify` | JSON Stringify | Convert a JS object literal to a valid JSON string | native |
+| 5 | `sort` | JSON Sort | Sort all object keys alphabetically (deep) | native |
+
+---
+
+### Phase 4 — JSON View & Query Tools
+
+| # | Slug | Name | Description | Library |
+|---|------|------|-------------|---------|
+| 6 | `diff` | JSON Diff | Compare two JSON objects and highlight differences | `deep-diff` or native |
+| 7 | `jsonpath` | JSONPath Query | Run JSONPath expressions against JSON (`$.store.book[*].title`) | `jsonpath-plus` |
+| 8 | `flatten` | JSON Flatten | Flatten nested JSON to a single level (`a.b.c: value`) | native |
+| 9 | `unflatten` | JSON Unflatten | Reverse flatten: restore nested structure from dot-notation keys | native |
+| 10 | `size` | JSON Size Analyzer | Show byte count, key count, depth, and type breakdown | native |
+| 11 | `search` | JSON Search | Find keys or values matching a pattern across the entire tree | native |
+
+---
+
+### Phase 5 — JSON Data Converters
+
+| # | Slug | Name | Description | Library |
+|---|------|------|-------------|---------|
+| 12 | `to-yaml` | JSON → YAML | Convert JSON to YAML format | `js-yaml` |
+| 13 | `from-yaml` | YAML → JSON | Convert YAML to JSON | `js-yaml` |
+| 14 | `to-csv` | JSON → CSV | Flatten JSON array to CSV rows | `papaparse` |
+| 15 | `from-csv` | CSV → JSON | Parse CSV into JSON array | `papaparse` |
+| 16 | `to-xml` | JSON → XML | Convert JSON to XML | `fast-xml-parser` |
+| 17 | `from-xml` | XML → JSON | Parse XML into JSON | `fast-xml-parser` |
+| 18 | `to-toml` | JSON → TOML | Convert JSON to TOML config format | `smol-toml` |
+| 19 | `to-sql` | JSON → SQL | Generate INSERT statements from JSON array | native |
+
+---
+
+### Phase 6 — JSON Code Generators
+
+| # | Slug | Name | Description | Library |
+|---|------|------|-------------|---------|
+| 20 | `to-typescript` | JSON → TypeScript | Generate TypeScript interfaces from JSON | `quicktype-core` |
+| 21 | `to-python` | JSON → Python | Generate Python dataclasses/Pydantic models | `quicktype-core` |
+| 22 | `to-golang` | JSON → Go | Generate Go structs | `quicktype-core` |
+| 23 | `to-java` | JSON → Java | Generate Java POJOs | `quicktype-core` |
+| 24 | `to-csharp` | JSON → C# | Generate C# classes | `quicktype-core` |
+| 25 | `to-rust` | JSON → Rust | Generate Rust structs with Serde | `quicktype-core` |
+| 26 | `to-zod` | JSON → Zod Schema | Generate Zod validation schema from JSON | `quicktype-core` |
+
+---
+
+### Phase 7 — JSON Schema & Advanced Tools
+
+| # | Slug | Name | Description | Library |
+|---|------|------|-------------|---------|
+| 27 | `schema-validate` | JSON Schema Validator | Validate JSON against a JSON Schema (Draft 7/2019/2020) | `ajv` |
+| 28 | `schema-generate` | JSON Schema Generator | Generate a JSON Schema from example JSON | `json-schema-generator` |
+| 29 | `jwt-decode` | JWT Decoder | Decode and inspect JWT header + payload | `jose` |
+| 30 | `token-count` | JSON Token Counter | Count tokens in JSON (for LLM context planning) | `js-tiktoken` |
+
+---
+
+### Phase N — Deploy ✅ DONE
+- Docker multi-stage build (node:20-alpine)
+- Nginx + SSL via certbot on Hostinger VPS (port 3002)
+- GitHub Actions CI/CD (push to `main` → SSH deploy → docker rebuild)
+
+---
+
+## JSON Tool UX Pattern (all tools follow this)
+
+```
+┌─ Toolbar ──────────────────────────────────────────────────────┐
+│  [Primary Action]  [Secondary...]  [Paste]  [Clear]    Options │
+└────────────────────────────────────────────────────────────────┘
+┌─ Status badge (shown after action) ────────────────────────────┐
+│  ✓ Valid JSON  /  ✗ Invalid JSON — line 5, col 3              │
+└────────────────────────────────────────────────────────────────┘
+┌─ INPUT (left, 50%) ──┬─ OUTPUT (right, 50%) ──────────────────┐
+│  CodeMirror editor   │  [Copy button]                          │
+│  (editable)          │  CodeMirror editor (readOnly)           │
+│                      │  key={outputKey} to reset scroll to top │
+└──────────────────────┴────────────────────────────────────────-┘
+```
+
+- `logic.ts` = pure function, no React/browser APIs → shared by UI + API
+- `index.tsx` = `"use client"` React component using shared components
+- Registry entry: `process` imported directly (not dynamic string) for bundler
 
 ---
 
