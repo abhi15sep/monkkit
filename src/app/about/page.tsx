@@ -5,8 +5,8 @@ import { AppFooter } from "@/components/layout/AppFooter";
 
 export const metadata = { title: "About | MonkKit" };
 
-const DONATE_URL = process.env.NEXT_PUBLIC_DONATE_URL ?? "https://buymeacoffee.com/devopsmonk";
-const BUY_COFFEE_URL = "https://buymeacoffee.com/devopsmonk";
+const DONATE_URL = process.env.NEXT_PUBLIC_DONATE_URL ?? "https://buymeacoffee.com/abhi15sep";
+const BUY_COFFEE_URL = "https://buymeacoffee.com/abhi15sep";
 
 export default function AboutPage() {
   return (
