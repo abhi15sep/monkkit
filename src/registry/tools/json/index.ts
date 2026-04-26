@@ -1,8 +1,10 @@
 import type { ToolDefinition } from "@/types/registry";
-
-// Tools will be imported here as they are built
-// import { jsonValidatorTool } from "./validator";
+import { jsonValidatorTool } from "./validator";
+import { jsonFormatterTool } from "./formatter";
+import { jsonMinifyTool } from "./minify";
 
 export const jsonTools: ToolDefinition[] = [
-  // jsonValidatorTool,
+  jsonValidatorTool,
+  jsonFormatterTool,
+  jsonMinifyTool,
 ];

@@ -44,7 +44,7 @@ export default async function ToolPage({
 
   return (
     <ToolShell meta={toolDef}>
-      <ToolRenderer toolDef={toolDef} />
+      <ToolRenderer category={category} slug={tool} />
     </ToolShell>
   );
 }
