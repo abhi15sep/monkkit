@@ -2,16 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Braces, QrCode, Lock, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import { registry } from "@/registry";
 import { cn } from "@/lib/utils";
-
-const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
-  Braces,
-  QrCode,
-  Lock,
-};
+import { getCategoryIcon } from "@/lib/category-icons";
 
 function activeCategoryFromPath(pathname: string): string | null {
   // /tools/json/validator → "json"
@@ -49,7 +44,7 @@ export function AppSidebar() {
     <aside className="w-56 shrink-0 hidden md:flex flex-col border-r border-border/50 h-[calc(100vh-3.5rem)] sticky top-14 overflow-y-auto">
       <nav className="flex flex-col gap-1 p-3">
         {registry.categories.map((category) => {
-          const Icon = ICONS[category.icon] ?? Braces;
+          const Icon = getCategoryIcon(category.icon);
           const tools = registry.tools.filter((t) => t.category === category.id);
           const isOpen = openCategories.has(category.id);
           const isCategoryActive = activeCategory === category.id;

@@ -1,13 +1,10 @@
 import Link from "next/link";
-import { Braces, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { AppFooter } from "@/components/layout/AppFooter";
 import { Badge } from "@/components/ui/badge";
 import { registry } from "@/registry";
-
-const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
-  json: Braces,
-};
+import { getCategoryIcon } from "@/lib/category-icons";
 
 export default function HomePage() {
   return (
@@ -29,10 +26,8 @@ export default function HomePage() {
         {/* Categories grid */}
         <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {registry.categories.map((category) => {
-            const tools = registry.tools.filter(
-              (t) => t.category === category.id
-            );
-            const Icon = CATEGORY_ICONS[category.id] ?? Braces;
+            const tools = registry.tools.filter((t) => t.category === category.id);
+            const Icon = getCategoryIcon(category.icon);
 
             return (
               <Link
