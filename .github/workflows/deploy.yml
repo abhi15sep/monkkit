@@ -37,9 +37,11 @@ jobs:
             npm ci --omit=dev --ignore-scripts 2>/dev/null || npm install --omit=dev --ignore-scripts
 
             # Run DB migration + seed using project-local Prisma (avoids global version mismatch)
+            # host.docker.internal only resolves inside containers; on the host use 127.0.0.1
             export $(grep -v '^#' "$APP_DIR/.env" | xargs)
-            node_modules/.bin/prisma db push --schema prisma/schema.prisma
-            node docker/migrate-seed.mjs
+            HOST_DB_URL=$(echo "$DATABASE_URL" | sed 's/host\.docker\.internal/127.0.0.1/g')
+            DATABASE_URL="$HOST_DB_URL" node_modules/.bin/prisma db push --schema prisma/schema.prisma
+            DATABASE_URL="$HOST_DB_URL" node docker/migrate-seed.mjs
 
             # Build new Docker image
             docker build -t monkkit:new "$REPO_DIR" -f "$REPO_DIR/docker/Dockerfile"
