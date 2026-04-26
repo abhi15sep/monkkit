@@ -8,7 +8,7 @@ import { PasteButton } from "@/components/tool-ui/PasteButton";
 import { ClearButton } from "@/components/tool-ui/ClearButton";
 import { ErrorDisplay } from "@/components/tool-ui/ErrorDisplay";
 import { Button } from "@/components/ui/button";
-import { generateCode } from "./logic";
+import { generateCodeAction } from "./actions";
 
 const SAMPLE = `{
   "id": 1,
@@ -40,7 +40,7 @@ export function CodegenTool({ lang, label }: Props) {
 
   const handleGenerate = async () => {
     setLoading(true);
-    const r = await generateCode({ input, typeName: typeName.trim() || "Root", lang });
+    const r = await generateCodeAction({ input, typeName: typeName.trim() || "Root", lang });
     setLoading(false);
     if (r.success) { setOutput(r.output!); setError(""); setOutputKey((k) => k + 1); }
     else { setOutput(""); setError(r.error!); }
