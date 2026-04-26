@@ -11,6 +11,14 @@ import { jsonFlattenTool } from "./flatten";
 import { jsonUnflattenTool } from "./unflatten";
 import { jsonSizeTool } from "./size";
 import { jsonSearchTool } from "./search";
+import { jsonToYamlTool } from "./to-yaml";
+import { yamlToJsonTool } from "./from-yaml";
+import { jsonToCsvTool } from "./to-csv";
+import { csvToJsonTool } from "./from-csv";
+import { jsonToXmlTool } from "./to-xml";
+import { xmlToJsonTool } from "./from-xml";
+import { jsonToTomlTool } from "./to-toml";
+import { jsonToSqlTool } from "./to-sql";
 
 export const jsonTools: ToolDefinition[] = [
   jsonToolsTool,
@@ -25,4 +33,12 @@ export const jsonTools: ToolDefinition[] = [
   jsonUnflattenTool,
   jsonSizeTool,
   jsonSearchTool,
+  jsonToYamlTool,
+  yamlToJsonTool,
+  jsonToCsvTool,
+  csvToJsonTool,
+  jsonToXmlTool,
+  xmlToJsonTool,
+  jsonToTomlTool,
+  jsonToSqlTool,
 ];
