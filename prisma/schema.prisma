@@ -33,7 +33,7 @@ model ApiUsage {
   apiKeyId String
   apiKey   ApiKey   @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
   tool     String
-  date     DateTime @default(now()) @db.Date
+  date     DateTime @default(now())
   count    Int      @default(0)
 
   @@unique([apiKeyId, tool, date])
