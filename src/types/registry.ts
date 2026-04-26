@@ -34,7 +34,7 @@ export interface ToolMeta {
 export interface ToolDefinition extends ToolMeta {
   component: () => Promise<{ default: ComponentType<ToolComponentProps> }>;
   // process() is imported directly at registry build time so the bundler can tree-shake it
-  process: (input: unknown) => unknown;
+  process: (input: unknown) => unknown | Promise<unknown>;
 }
 
 export interface ToolComponentProps {

@@ -56,7 +56,7 @@ export async function POST(
 
   // 5. Call the process function registered on the tool definition
   try {
-    const result = toolDef.process(body);
+    const result = await Promise.resolve(toolDef.process(body));
     return Response.json({ success: true, tool: toolDef.id, result });
   } catch (err) {
     return Response.json(

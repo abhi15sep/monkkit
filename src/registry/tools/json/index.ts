@@ -19,6 +19,13 @@ import { jsonToXmlTool } from "./to-xml";
 import { xmlToJsonTool } from "./from-xml";
 import { jsonToTomlTool } from "./to-toml";
 import { jsonToSqlTool } from "./to-sql";
+import { jsonToTypescriptTool } from "./to-typescript";
+import { jsonToPythonTool } from "./to-python";
+import { jsonToGolangTool } from "./to-golang";
+import { jsonToJavaTool } from "./to-java";
+import { jsonToCsharpTool } from "./to-csharp";
+import { jsonToRustTool } from "./to-rust";
+import { jsonToZodTool } from "./to-zod";
 
 export const jsonTools: ToolDefinition[] = [
   jsonToolsTool,
@@ -41,4 +48,11 @@ export const jsonTools: ToolDefinition[] = [
   xmlToJsonTool,
   jsonToTomlTool,
   jsonToSqlTool,
+  jsonToTypescriptTool,
+  jsonToPythonTool,
+  jsonToGolangTool,
+  jsonToJavaTool,
+  jsonToCsharpTool,
+  jsonToRustTool,
+  jsonToZodTool,
 ];
