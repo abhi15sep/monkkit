@@ -12,7 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DonateButton } from "./DonateButton";
 import { useRouter } from "next/navigation";
 
 export function AppHeader() {
@@ -36,14 +35,15 @@ export function AppHeader() {
           <Link href="/docs/api" className="hover:text-foreground transition-colors">
             API Docs
           </Link>
+          <Link href="/about" className="hover:text-foreground transition-colors">
+            About
+          </Link>
         </nav>
 
         <div className="flex-1" />
 
         {/* Right side */}
         <div className="flex items-center gap-2">
-          <DonateButton />
-
           {session ? (
             <DropdownMenu>
               <DropdownMenuTrigger
@@ -62,10 +62,7 @@ export function AppHeader() {
                 <div className="px-2 py-1.5 text-sm font-medium">{session.user.name}</div>
                 <div className="px-2 pb-1.5 text-xs text-muted-foreground">{session.user.email}</div>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => router.push("/dashboard")}
-                  className="cursor-pointer"
-                >
+                <DropdownMenuItem onClick={() => router.push("/dashboard")} className="cursor-pointer">
                   <LayoutDashboard className="mr-2 h-4 w-4" />
                   Dashboard
                 </DropdownMenuItem>
@@ -82,10 +79,9 @@ export function AppHeader() {
           ) : (
             <Button
               size="sm"
-              variant="outline"
               onClick={() => signIn(undefined, { callbackUrl: "/dashboard" })}
             >
-              Get API Key
+              Sign in
             </Button>
           )}
         </div>

@@ -1,8 +1,6 @@
 import Link from "next/link";
 
 export function AppFooter() {
-  const donateUrl =
-    process.env.NEXT_PUBLIC_DONATE_URL ?? "https://buymeacoffee.com";
   return (
     <footer className="border-t border-border/50 py-6 px-4 lg:px-6">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted-foreground">
@@ -21,14 +19,10 @@ export function AppFooter() {
             DevOps Monk
           </a>
         </p>
-        <a
-          href={donateUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-yellow-400 transition-colors"
-        >
-          ☕ If MonkKit saves you time, buy me a coffee
-        </a>
+        <div className="flex items-center gap-4">
+          <Link href="/about" className="hover:text-foreground transition-colors">About</Link>
+          <Link href="/docs/api" className="hover:text-foreground transition-colors">API Docs</Link>
+        </div>
       </div>
     </footer>
   );

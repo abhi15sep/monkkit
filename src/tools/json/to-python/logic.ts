@@ -1,2 +1,4 @@
-import { makeProcess } from "../_codegen/logic";
-export const process = makeProcess("python");
+export const process = async (params: unknown) => {
+  const { makeProcess } = await import("../_codegen/logic");
+  return makeProcess("python")(params);
+};
