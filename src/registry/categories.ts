@@ -19,4 +19,13 @@ export const CATEGORIES: ToolCategory[] = [
     slug: "generators",
     order: 2,
   },
+  {
+    id: "encoding",
+    name: "Encoding",
+    description: "Encode, decode, and hash data in various formats",
+    icon: "Lock",
+    color: "blue",
+    slug: "encoding",
+    order: 3,
+  },
 ];
