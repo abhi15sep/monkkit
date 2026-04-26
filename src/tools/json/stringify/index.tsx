@@ -14,6 +14,17 @@ import type { ToolComponentProps } from "@/types/registry";
 
 const INDENT_OPTIONS = [2, 4] as const;
 
+const SAMPLE = `{
+  name: 'Alice Johnson',
+  age: 32,
+  active: true,
+  tags: ['developer', 'designer'],
+  address: {
+    city: 'New York',
+    zip: '10001'
+  }
+}`;
+
 export default function JsonStringify({ toolMeta: _ }: ToolComponentProps) {
   const [input, setInput] = useState("");
   const [indent, setIndent] = useState<2 | 4>(2);
@@ -44,6 +55,9 @@ export default function JsonStringify({ toolMeta: _ }: ToolComponentProps) {
       <div className="flex flex-wrap items-center gap-2">
         <Button size="sm" onClick={handleStringify} disabled={!input.trim()}>
           Stringify
+        </Button>
+        <Button size="sm" variant="outline" onClick={() => resetInput(SAMPLE)}>
+          Sample
         </Button>
         <PasteButton onPaste={resetInput} />
         <ClearButton onClick={() => resetInput("")} />

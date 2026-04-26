@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { process } from "./logic";
 import type { ToolComponentProps } from "@/types/registry";
 
+const SAMPLE = `{"name": "Alice Johnson", "message": "Hello,\nWelcome to \"MonkKit\"!\nLine 3 here."}`;
+
 export default function JsonEscape({ toolMeta: _ }: ToolComponentProps) {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
@@ -40,6 +42,9 @@ export default function JsonEscape({ toolMeta: _ }: ToolComponentProps) {
       <div className="flex flex-wrap items-center gap-2">
         <Button size="sm" onClick={handleEscape} disabled={!input.trim()}>
           Escape
+        </Button>
+        <Button size="sm" variant="outline" onClick={() => resetInput(SAMPLE)}>
+          Sample
         </Button>
         <PasteButton onPaste={resetInput} />
         <ClearButton onClick={() => resetInput("")} />

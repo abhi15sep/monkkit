@@ -18,6 +18,20 @@ import type { ToolComponentProps } from "@/types/registry";
 
 const INDENT_OPTIONS = [2, 4] as const;
 
+const SAMPLE = `{
+  "name": "Alice Johnson",
+  "age": 32,
+  "email": "alice@example.com",
+  "address": {
+    "street": "123 Main St",
+    "city": "New York",
+    "zip": "10001"
+  },
+  "tags": ["developer", "designer"],
+  "active": true,
+  "score": 98.5
+}`;
+
 export default function JsonTool({ toolMeta: _ }: ToolComponentProps) {
   const [input, setInput] = useState("");
   const [indent, setIndent] = useState<2 | 4>(2);
@@ -77,6 +91,9 @@ export default function JsonTool({ toolMeta: _ }: ToolComponentProps) {
         </Button>
         <Button size="sm" variant="outline" onClick={handleValidate} disabled={!input.trim()}>
           Validate
+        </Button>
+        <Button size="sm" variant="outline" onClick={() => resetInput(SAMPLE)}>
+          Sample
         </Button>
         <PasteButton onPaste={resetInput} />
         <ClearButton onClick={() => resetInput("")} />

@@ -12,6 +12,19 @@ import { Button } from "@/components/ui/button";
 import { process } from "./logic";
 import type { ToolComponentProps } from "@/types/registry";
 
+const SAMPLE = `{
+  name: 'Alice Johnson',
+  age: 32,
+  email: "alice@example.com",
+  address: {
+    street: '123 Main St',
+    city: 'New York',
+    zip: '10001',
+  },
+  tags: ['developer', 'designer',],
+  active: true,
+}`;
+
 export default function JsonRepair({ toolMeta: _ }: ToolComponentProps) {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
@@ -46,6 +59,9 @@ export default function JsonRepair({ toolMeta: _ }: ToolComponentProps) {
         <Button size="sm" onClick={handleRepair} disabled={!input.trim()}>
           <Wrench className="h-3.5 w-3.5 mr-1.5" />
           Repair JSON
+        </Button>
+        <Button size="sm" variant="outline" onClick={() => resetInput(SAMPLE)}>
+          Sample
         </Button>
         <PasteButton onPaste={resetInput} />
         <ClearButton onClick={() => resetInput("")} />

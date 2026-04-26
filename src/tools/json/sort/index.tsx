@@ -14,6 +14,19 @@ import type { ToolComponentProps } from "@/types/registry";
 
 const INDENT_OPTIONS = [2, 4] as const;
 
+const SAMPLE = `{
+  "zebra": "last",
+  "name": "Alice Johnson",
+  "age": 32,
+  "address": {
+    "zip": "10001",
+    "city": "New York",
+    "street": "123 Main St"
+  },
+  "active": true,
+  "email": "alice@example.com"
+}`;
+
 export default function JsonSort({ toolMeta: _ }: ToolComponentProps) {
   const [input, setInput] = useState("");
   const [indent, setIndent] = useState<2 | 4>(2);
@@ -45,6 +58,9 @@ export default function JsonSort({ toolMeta: _ }: ToolComponentProps) {
       <div className="flex flex-wrap items-center gap-2">
         <Button size="sm" onClick={handleSort} disabled={!input.trim()}>
           Sort Keys
+        </Button>
+        <Button size="sm" variant="outline" onClick={() => resetInput(SAMPLE)}>
+          Sample
         </Button>
         <PasteButton onPaste={resetInput} />
         <ClearButton onClick={() => resetInput("")} />
