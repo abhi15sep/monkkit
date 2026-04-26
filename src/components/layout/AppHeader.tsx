@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { Braces, User, LogOut, LayoutDashboard } from "lucide-react";
+import { Zap, User, LogOut, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -24,7 +24,7 @@ export function AppHeader() {
       <div className="flex h-14 items-center gap-4 px-4 lg:px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 font-semibold">
-          <Braces className="h-5 w-5 text-primary" />
+          <Zap className="h-5 w-5 text-primary" />
           <span className="text-lg">MonkKit</span>
         </Link>
 

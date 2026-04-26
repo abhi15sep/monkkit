@@ -1,5 +1,5 @@
 import { signIn } from "@/lib/auth";
-import { Braces } from "lucide-react";
+import { Zap } from "lucide-react";
 
 export const metadata = { title: "Sign In | MonkKit" };
 
@@ -9,7 +9,7 @@ export default function SignInPage() {
       <div className="w-full max-w-sm space-y-6">
         <div className="text-center">
           <div className="inline-flex items-center gap-2 mb-4">
-            <Braces className="h-6 w-6 text-primary" />
+            <Zap className="h-6 w-6 text-primary" />
             <span className="text-xl font-semibold">MonkKit</span>
           </div>
           <h1 className="text-2xl font-bold">Get your API key</h1>
