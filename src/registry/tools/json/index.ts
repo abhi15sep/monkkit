@@ -26,6 +26,10 @@ import { jsonToJavaTool } from "./to-java";
 import { jsonToCsharpTool } from "./to-csharp";
 import { jsonToRustTool } from "./to-rust";
 import { jsonToZodTool } from "./to-zod";
+import { jsonSchemaValidateTool } from "./schema-validate";
+import { jsonSchemaGenerateTool } from "./schema-generate";
+import { jwtDecodeTool } from "./jwt-decode";
+import { jsonTokenCountTool } from "./token-count";
 
 export const jsonTools: ToolDefinition[] = [
   jsonToolsTool,
@@ -55,4 +59,8 @@ export const jsonTools: ToolDefinition[] = [
   jsonToCsharpTool,
   jsonToRustTool,
   jsonToZodTool,
+  jsonSchemaValidateTool,
+  jsonSchemaGenerateTool,
+  jwtDecodeTool,
+  jsonTokenCountTool,
 ];
